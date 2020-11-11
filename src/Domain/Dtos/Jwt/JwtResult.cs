@@ -5,7 +5,7 @@ namespace Domain.Dtos.Jwt
     public class JwtResult : Result.Result, IJwtResult
     {
         public JwtResult(string jwtToken, string refreshToken, DateTimeOffset tokenExpiresDate,
-            DateTimeOffset refreshTokenExpiresDate):base("Successfully login")
+            DateTimeOffset refreshTokenExpiresDate) : base("Successfully login")
         {
             JwtToken = jwtToken;
             RefreshToken = refreshToken;

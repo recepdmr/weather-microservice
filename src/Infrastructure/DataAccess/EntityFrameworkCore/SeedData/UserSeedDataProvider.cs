@@ -33,7 +33,6 @@ namespace Infrastructure.DataAccess.EntityFrameworkCore.SeedData
                 await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Name, user.Name));
                 await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.Surname));
                 await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.UserData, user.Id.ToString("B")));
-
             }
         }
     }

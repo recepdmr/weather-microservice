@@ -3,7 +3,7 @@ using Domain.Dtos.Result;
 
 namespace Domain.Dtos.Jwt
 {
-    public interface IJwtResult  : IResult
+    public interface IJwtResult : IResult
     {
         public string JwtToken { get; set; }
         public string RefreshToken { get; set; }

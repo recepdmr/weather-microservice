@@ -12,10 +12,10 @@ namespace Infrastructure.Jwt.Extensions
         public static void AddJwtAuthentication(this IServiceCollection services, JwtOptions options)
         {
             services.AddAuthentication(authenticationOptions =>
-            {
-                authenticationOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                authenticationOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }
+                    {
+                        authenticationOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        authenticationOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    }
                 )
                 .AddJwtBearer(opt =>
                 {

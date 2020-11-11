@@ -16,6 +16,7 @@ namespace Api.Controllers
         public UsersController(IMediator mediator) : base(mediator)
         {
         }
+
         /// <summary>
         ///     Login application
         /// </summary>
@@ -46,7 +47,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// cancell refresh token
+        ///     cancell refresh token
         /// </summary>
         /// <param name="cancelRefreshTokenCommand"></param>
         /// <param name="cancellationToken"></param>
@@ -54,6 +55,8 @@ namespace Api.Controllers
         [HttpPost("revoke-refresh-token")]
         public async Task<IActionResult> RevokeRefreshToken(
             [FromBody] CancelRefreshTokenCommand cancelRefreshTokenCommand, CancellationToken cancellationToken)
-            => Ok(await Mediator.Send(cancelRefreshTokenCommand, cancellationToken));
+        {
+            return Ok(await Mediator.Send(cancelRefreshTokenCommand, cancellationToken));
+        }
     }
 }

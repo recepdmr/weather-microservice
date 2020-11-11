@@ -37,7 +37,6 @@ namespace Infrastructure
         {
             services.AddIdentity<User, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<WeatherDbContext>();
-
         }
     }
 }

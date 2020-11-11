@@ -7,10 +7,9 @@ namespace Domain.Users
     {
         public User()
         {
-            
         }
 
-        public User(string userName,string name,string surname) : base(userName)
+        public User(string userName, string name, string surname) : base(userName)
         {
             Name = name;
             Surname = surname;

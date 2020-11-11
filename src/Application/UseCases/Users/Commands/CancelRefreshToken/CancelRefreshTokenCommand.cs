@@ -8,6 +8,7 @@ namespace Application.UseCases.Users.Commands.CancelRefreshToken
     {
         public string RefreshToken { get; set; }
 
-        public byte[] RefreshTokenHash => !string.IsNullOrEmpty(RefreshToken) ? Encoding.UTF8.GetBytes(RefreshToken) : default;
+        public byte[] RefreshTokenHash =>
+            !string.IsNullOrEmpty(RefreshToken) ? Encoding.UTF8.GetBytes(RefreshToken) : default;
     }
 }

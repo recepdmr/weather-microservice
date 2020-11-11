@@ -29,24 +29,23 @@ namespace Application.UseCases.Users.Commands.LoginUser
         public async Task<IResult> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var mappingUser = _mapper.Map<User>(request);
-            
+
             var user = await _userManager.FindByNameAsync(mappingUser.UserName);
 
             var result = await _userManager.CheckPasswordAsync(user, request.Password);
 
-            if (!result)return new Result("Username or password is incorrect");
+            if (!result) return new Result("Username or password is incorrect");
 
             var claims = await _userManager.GetClaimsAsync(user);
 
             var jwtResult = _jwtService.CreateJwtResult(claims);
-            
+
             user.RefreshTokenHash = Encoding.ASCII.GetBytes(jwtResult.RefreshToken);
             user.RefreshTokenExpiresDate = jwtResult.RefreshTokenExpiresDate;
-            
+
             await _userManager.UpdateAsync(user);
 
             return jwtResult;
         }
-
     }
 }

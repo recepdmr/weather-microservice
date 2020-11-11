@@ -29,9 +29,9 @@ namespace Application.UseCases.Users.Commands.CancelRefreshToken
             user.RefreshTokenHash = null;
             user.RefreshTokenExpiresDate = DateTimeOffset.MinValue;
 
-           await _userManager.UpdateAsync(user);
-           
-           return new Result("Token revoked");
+            await _userManager.UpdateAsync(user);
+
+            return new Result("Token revoked");
         }
     }
 }

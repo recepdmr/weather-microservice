@@ -1,5 +1,4 @@
-﻿using Domain.Dtos.Jwt;
-using Domain.Dtos.Result;
+﻿using Domain.Dtos.Result;
 using MediatR;
 
 namespace Application.UseCases.Users.Commands.LoginUser
