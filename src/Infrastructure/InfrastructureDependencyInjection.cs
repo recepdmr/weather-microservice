@@ -5,7 +5,7 @@ namespace Infrastructure
 {
     public static class InfrastructureDependencyInjection
     {
-        public static void AddInfrastucture(this IServiceCollection services)
+        public static void AddInfrastructure(this IServiceCollection services)
         {
             services.AddSingleton<IWeatherService, NullWeatherService>();
         }

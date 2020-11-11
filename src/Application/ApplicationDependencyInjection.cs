@@ -8,7 +8,7 @@ namespace Application
     {
         public static void AddApplication(this IServiceCollection services)
         {
-            services.AddInfrastucture();
+            services.AddInfrastructure();
 
             services.AddMediatR(typeof(ApplicationDependencyInjection));
         }
