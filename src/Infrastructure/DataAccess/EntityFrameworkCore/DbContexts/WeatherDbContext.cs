@@ -1,7 +1,15 @@
-﻿namespace Infrastructure.DataAccess.EntityFrameworkCore.DbContexts
+﻿using System;
+using Domain.Users;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace Infrastructure.DataAccess.EntityFrameworkCore.DbContexts
 {
-    public class WeatherDbContext
+    public class WeatherDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
-        
+        public WeatherDbContext(DbContextOptions<WeatherDbContext> options) : base(options)
+        {
+        }
     }
 }

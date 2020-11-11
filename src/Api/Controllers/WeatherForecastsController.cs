@@ -5,6 +5,7 @@ using Api.Abstractions;
 using Application.UseCases.Weathers.Queries.GetWeathers;
 using Domain.Weathers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -21,6 +22,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IReadOnlyCollection<WeatherForecast>> GetAsync()
         {
             _logger.LogDebug("{ControllerName}", nameof(WeatherForecastsController));

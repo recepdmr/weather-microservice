@@ -5,17 +5,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Core.Services.Jwt.Extensions
+namespace Infrastructure.Jwt.Extensions
 {
-    public static class ServiceCollectionExtensions
+    public static class InfrastructureDependencyInjection
     {
         public static void AddJwtAuthentication(this IServiceCollection services, JwtOptions options)
         {
             services.AddAuthentication(authenticationOptions =>
-                    {
-                        authenticationOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                        authenticationOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    }
+            {
+                authenticationOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authenticationOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }
                 )
                 .AddJwtBearer(opt =>
                 {

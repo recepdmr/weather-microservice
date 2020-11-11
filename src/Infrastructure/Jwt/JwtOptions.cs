@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Core.Services.Jwt
+namespace Infrastructure.Jwt
 {
     public class JwtOptions
     {
@@ -31,14 +31,7 @@ namespace Core.Services.Jwt
         public string SecurityKey { get; set; }
         public int ExpireHours { get; set; }
 
-        public byte[] SecurityKeyBytes
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(SecurityKey))
-                    return Encoding.UTF8.GetBytes(SecurityKey);
-                return default;
-            }
-        }
+        public byte[] SecurityKeyBytes =>
+            !string.IsNullOrEmpty(SecurityKey) ? Encoding.UTF8.GetBytes(SecurityKey) : default;
     }
 }

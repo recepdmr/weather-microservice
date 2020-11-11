@@ -1,10 +1,11 @@
-﻿using Core.Abstraction.MediatR;
+﻿using Domain.Dtos.Jwt;
+using MediatR;
 
-namespace Core.UseCases.Users.Commands.LoginUser
+namespace Application.UseCases.Users.Commands.LoginUser
 {
-    public class LoginUserCommand : IMediatrRequest
+    public class LoginUserCommand : IRequest<IJwtResult>
     {
-        public string EmailAddress { get; set; }
+        public string Username { get; set; }
         public string Password { get; set; }
     }
 }

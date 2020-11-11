@@ -1,7 +1,6 @@
-﻿using Core.Extensions;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace Core.UseCases.Users.Commands.LoginWithRefreshToken
+namespace Application.UseCases.Users.Commands.LoginWithRefreshToken
 {
     public class LoginWithRefreshTokenCommandValidator : AbstractValidator<LoginWithRefreshTokenCommand>
     {
@@ -10,8 +9,13 @@ namespace Core.UseCases.Users.Commands.LoginWithRefreshToken
             RuleFor(x => x.RefreshToken)
                 .NotNull()
                 .NotEmpty()
-                .Xss()
+                .Must(CheckXss)
                 ;
+        }
+
+        private bool CheckXss(string arg)
+        {
+            return arg.Contains("<");
         }
     }
 }

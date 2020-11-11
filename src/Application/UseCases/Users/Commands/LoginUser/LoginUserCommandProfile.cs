@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
-using Core.Entities.Users;
+using Domain.Users;
 
-namespace Core.UseCases.Users.Commands.LoginUser
+namespace Application.UseCases.Users.Commands.LoginUser
 {
     public class LoginUserCommandProfile : Profile
     {
         public LoginUserCommandProfile()
         {
             CreateMap<LoginUserCommand, User>()
-                .ForMember(x => x.Email, opt => opt.MapFrom(xx => xx.EmailAddress))
+                .ForMember(x => x.UserName, opt =>
+                    opt.MapFrom(xx => xx.Username))
                 ;
         }
     }

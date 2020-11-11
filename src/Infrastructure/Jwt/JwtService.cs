@@ -4,11 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Core.Utilities.ResultManagement.JwtResults;
+using Domain.Dtos.Jwt;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Core.Services.Jwt
+namespace Infrastructure.Jwt
 {
     public class JwtService : IJwtService
     {
@@ -16,7 +16,7 @@ namespace Core.Services.Jwt
 
         public JwtService(IOptions<JwtOptions> jwtOptions)
         {
-            _jwtOptions = Check.NotNull(jwtOptions.Value);
+            _jwtOptions = jwtOptions.Value;
         }
 
         public IJwtResult CreateJwtResult(IList<Claim> claims)
@@ -36,7 +36,7 @@ namespace Core.Services.Jwt
 
             var refreshTokenExpiresDate = DateTime.Now.AddHours(_jwtOptions.ExpireHours).AddHours(1);
 
-            return new JwtResult(MessageConst.SuccessfulLogin, token, refreshToken,
+            return new JwtResult(token, refreshToken,
                 DateTime.Now.AddHours(_jwtOptions.ExpireHours),
                 refreshTokenExpiresDate);
         }

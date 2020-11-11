@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using Domain.Users;
 using Infrastructure.DataAccess.EntityFrameworkCore.DbContexts;
@@ -22,10 +23,17 @@ namespace Infrastructure.DataAccess.EntityFrameworkCore.SeedData
         {
             if (!await _weatherDbContext.Users.AnyAsync(cancellationToken))
             {
-                var user = new User {UserName = "test1"};
+                var user = new User("test1", "admin", "surname");
                 await _userManager.AddPasswordAsync(user, "123456");
 
                 await _weatherDbContext.Users.AddAsync(user, cancellationToken);
+
+                await _weatherDbContext.SaveChangesAsync(cancellationToken);
+
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Name, user.Name));
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.Surname));
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.UserData, user.Id.ToString("B")));
+
             }
         }
     }

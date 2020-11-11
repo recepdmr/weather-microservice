@@ -1,12 +1,12 @@
 ﻿using System.Text;
-using Core.Abstraction.MediatR;
+using Domain.Dtos.Jwt;
+using MediatR;
 
-namespace Core.UseCases.Users.Commands.LoginWithRefreshToken
+namespace Application.UseCases.Users.Commands.LoginWithRefreshToken
 {
-    public class LoginWithRefreshTokenCommand : IMediatrRequest
+    public class LoginWithRefreshTokenCommand : IRequest<IJwtResult>
     {
-
-        public string RefreshToken { get; }
+        public string RefreshToken { get; set; }
 
         public byte[] RefreshTokenHash => Encoding.ASCII.GetBytes(RefreshToken);
     }

@@ -1,57 +1,53 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Abstraction.MediatR;
-using Core.Entities.Users;
-using Core.Services.Jwt;
-using Core.Utilities.ResultManagement;
+using AutoMapper;
+using Domain.Dtos.Jwt;
+using Domain.Users;
+using Infrastructure.Jwt;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace Core.UseCases.Users.Commands.LoginUser
+namespace Application.UseCases.Users.Commands.LoginUser
 {
-    public class LoginUserCommandHandler : MediatrRequestHandler<LoginUserCommand>
+    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, IJwtResult>
     {
         private readonly IJwtService _jwtService;
+        private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
 
         public LoginUserCommandHandler(
             UserManager<User> applicationUserManager,
-            IJwtService jwtService)
+            IJwtService jwtService,
+            IMapper mapper)
         {
-            _jwtService = Check.NotNull(jwtService);
-            _userManager = Check.NotNull(applicationUserManager);
+            _jwtService = jwtService;
+            _mapper = mapper;
+            _userManager = applicationUserManager;
         }
 
-        protected override async Task<IResult> HandleAsync(LoginUserCommand request,
-            CancellationToken cancellationToken = default)
+        public async Task<IJwtResult> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByEmailAsync(request.EmailAddress);
+            var mappingUser = _mapper.Map<User>(request);
+            
+            var user = await _userManager.FindByNameAsync(mappingUser.UserName);
 
             var result = await _userManager.CheckPasswordAsync(user, request.Password);
 
-            if (!result) throw new ApplicationException(MessageConst.NotFoundUser);
+            if (!result) throw new ApplicationException("Username or password is incorrect");
 
             var claims = await _userManager.GetClaimsAsync(user);
 
-            await AddClaimRoleAsync(claims, user);
-
             var jwtResult = _jwtService.CreateJwtResult(claims);
-
+            
             user.RefreshTokenHash = Encoding.ASCII.GetBytes(jwtResult.RefreshToken);
             user.RefreshTokenExpiresDate = jwtResult.RefreshTokenExpiresDate;
+            
             await _userManager.UpdateAsync(user);
 
             return jwtResult;
         }
 
-        private async Task AddClaimRoleAsync(ICollection<Claim> claims, User user)
-        {
-            var roles = await _userManager.GetRolesAsync(user);
-            var rolesString = string.Join(',', roles);
-            claims.Add(new Claim(ClaimTypes.Role, rolesString));
-        }
     }
 }
