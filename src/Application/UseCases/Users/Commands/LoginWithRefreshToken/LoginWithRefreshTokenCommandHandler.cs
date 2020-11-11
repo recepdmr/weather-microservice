@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Domain.Dtos.Jwt;
+using Domain.Dtos.Result;
 using Domain.Users;
 using Infrastructure.Jwt;
 using MediatR;
@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.UseCases.Users.Commands.LoginWithRefreshToken
 {
-    public class LoginWithRefreshTokenCommandHandler : IRequestHandler<LoginWithRefreshTokenCommand, IJwtResult>
+    public class LoginWithRefreshTokenCommandHandler : IRequestHandler<LoginWithRefreshTokenCommand, IResult>
     {
         private readonly IJwtService _jwtService;
 
@@ -24,13 +24,13 @@ namespace Application.UseCases.Users.Commands.LoginWithRefreshToken
             _jwtService = jwtService;
         }
 
-        public async Task<IJwtResult> Handle(LoginWithRefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<IResult> Handle(LoginWithRefreshTokenCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.RefreshTokenHash == request.RefreshTokenHash,
                 cancellationToken);
 
             if (user == null || user.RefreshTokenExpiresDate <= DateTime.Now)
-                throw new Exception("Refresh Token is not valid");
+                return new Result("Refresh Token is not valid");
 
             var claims = (await _userManager.GetClaimsAsync(user)).ToList();
 

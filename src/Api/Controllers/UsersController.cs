@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Api.Abstractions;
+using Application.UseCases.Users.Commands.CancelRefreshToken;
 using Application.UseCases.Users.Commands.LoginUser;
 using Application.UseCases.Users.Commands.LoginWithRefreshToken;
 using Domain.Dtos.Jwt;
@@ -21,8 +22,7 @@ namespace Api.Controllers
         /// <param name="loginUserCommand">command</param>
         /// <param name="cancellationToken">cancellation token</param>
         /// <returns></returns>
-        [HttpPost]
-        [Route(nameof(LoginAsync))]
+        [HttpPost("authenticate")]
         [ProducesResponseType(typeof(JwtResult), StatusCodes.Status201Created)]
         public async Task<IActionResult> LoginAsync([FromBody] LoginUserCommand loginUserCommand,
             CancellationToken cancellationToken = default)
@@ -36,8 +36,7 @@ namespace Api.Controllers
         /// <param name="loginWithRefreshTokenCommand">command</param>
         /// <param name="cancellationToken">cancellation token</param>
         /// <returns></returns>
-        [HttpPost]
-        [Route(nameof(LoginWithRefreshTokenAsync))]
+        [HttpPost("refresh-token")]
         [ProducesResponseType(typeof(JwtResult), StatusCodes.Status201Created)]
         public async Task<IActionResult> LoginWithRefreshTokenAsync(
             [FromBody] LoginWithRefreshTokenCommand loginWithRefreshTokenCommand,
@@ -45,5 +44,16 @@ namespace Api.Controllers
         {
             return Ok(await Mediator.Send(loginWithRefreshTokenCommand, cancellationToken));
         }
+
+        /// <summary>
+        /// cancell refresh token
+        /// </summary>
+        /// <param name="cancelRefreshTokenCommand"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpPost("revoke-refresh-token")]
+        public async Task<IActionResult> RevokeRefreshToken(
+            [FromBody] CancelRefreshTokenCommand cancelRefreshTokenCommand, CancellationToken cancellationToken)
+            => Ok(await Mediator.Send(cancelRefreshTokenCommand, cancellationToken));
     }
 }

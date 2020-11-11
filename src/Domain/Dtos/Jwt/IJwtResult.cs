@@ -1,8 +1,9 @@
 ﻿using System;
+using Domain.Dtos.Result;
 
 namespace Domain.Dtos.Jwt
 {
-    public interface IJwtResult
+    public interface IJwtResult  : IResult
     {
         public string JwtToken { get; set; }
         public string RefreshToken { get; set; }

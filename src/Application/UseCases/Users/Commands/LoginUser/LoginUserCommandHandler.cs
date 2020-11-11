@@ -1,9 +1,8 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Domain.Dtos.Jwt;
+using Domain.Dtos.Result;
 using Domain.Users;
 using Infrastructure.Jwt;
 using MediatR;
@@ -11,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.UseCases.Users.Commands.LoginUser
 {
-    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, IJwtResult>
+    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, IResult>
     {
         private readonly IJwtService _jwtService;
         private readonly IMapper _mapper;
@@ -27,7 +26,7 @@ namespace Application.UseCases.Users.Commands.LoginUser
             _userManager = applicationUserManager;
         }
 
-        public async Task<IJwtResult> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<IResult> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var mappingUser = _mapper.Map<User>(request);
             
@@ -35,7 +34,7 @@ namespace Application.UseCases.Users.Commands.LoginUser
 
             var result = await _userManager.CheckPasswordAsync(user, request.Password);
 
-            if (!result) throw new ApplicationException("Username or password is incorrect");
+            if (!result)return new Result("Username or password is incorrect");
 
             var claims = await _userManager.GetClaimsAsync(user);
 

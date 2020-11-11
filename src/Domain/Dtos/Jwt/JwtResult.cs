@@ -2,10 +2,10 @@
 
 namespace Domain.Dtos.Jwt
 {
-    public class JwtResult : IJwtResult
+    public class JwtResult : Result.Result, IJwtResult
     {
         public JwtResult(string jwtToken, string refreshToken, DateTimeOffset tokenExpiresDate,
-            DateTimeOffset refreshTokenExpiresDate)
+            DateTimeOffset refreshTokenExpiresDate):base("Successfully login")
         {
             JwtToken = jwtToken;
             RefreshToken = refreshToken;
